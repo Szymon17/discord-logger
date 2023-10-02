@@ -13,4 +13,5 @@ This app will display the most important discord logs on channel what will you c
   BOOT_ROOM_ID - ID of room where logs will be display </br>
 
 
-![logger](https://github.com/Szymon17/discord-logger/assets/111567990/ec853d8e-eec1-4acc-928e-513248250cc2)
+
+![logger](https://github.com/Szymon17/discord-logger/assets/111567990/4b496c9e-a06f-434c-b051-ae9f32acb52b)
