@@ -1,4 +1,6 @@
-const clearChannel = async (channelID, client) => {
+import client from "./client.js";
+
+const clearChannel = async channelID => {
   const chanel = client.channels.cache.get(channelID);
 
   const fetched = await chanel.messages.fetch({ limit: 100 });
@@ -11,4 +13,8 @@ const getUsername = user => {
   return username;
 };
 
-export { clearChannel, getUsername };
+const sendEmbed = (channelID, embed) => {
+  client.channels.cache.get(channelID).send({ embeds: [embed] });
+};
+
+export { clearChannel, getUsername, sendEmbed };

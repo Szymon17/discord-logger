@@ -1,15 +1,13 @@
 import "dotenv/config";
 import { REST, Routes } from "discord.js";
+import { clearChannel } from "./utils.js";
+import { botChanelID } from "./index.js";
 import client from "./client.js";
 
 const commands = [
   {
-    name: "hi",
-    description: "Replies with Pong!",
-  },
-  {
-    name: "hi1",
-    description: "Replies with Pong!",
+    name: "clear",
+    description: "clear 100 logs messages",
   },
 ];
 
@@ -25,11 +23,10 @@ const registerCommands = async () => {
 
 client.on("interactionCreate", async interaction => {
   if (!interaction.isChatInputCommand()) return;
-
-  if (interaction.commandName === "hi") {
-    await interaction.reply("Hey");
-  } else if (interaction.commandName === "hi1") {
-    await interaction.reply("Hey");
+  console.log(interaction);
+  if (interaction.commandName === "clear") {
+    // await clearChannel(botChanelID)
+    await interaction.reply("widzę");
   }
 });
 
