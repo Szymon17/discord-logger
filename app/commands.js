@@ -25,7 +25,7 @@ client.on("interactionCreate", async interaction => {
   if (!interaction.isChatInputCommand()) return;
   console.log(interaction);
   if (interaction.commandName === "clear") {
-    // await clearChannel(botChanelID)
+    // await clearChannel(botChanelID);
     await interaction.reply("widzę");
   }
 });
