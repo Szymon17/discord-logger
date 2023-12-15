@@ -99,16 +99,16 @@ client.on("voiceChannelLeave", (member, channel) => {
   sendEmbed(botChanelID, embed);
 });
 
-client.on("voiceChannelSwitch", async (member, oldChannel, newChannel) => {
-  const username = getUsername(member.user);
+// client.on("voiceChannelSwitch", async (member, oldChannel, newChannel) => {
+//   const username = getUsername(member.user);
 
-  const embed = new EmbedBuilder()
-    .setTitle("Zmiana kanału")
-    .setColor("Blue")
-    .setDescription("Użytkownik " + username + " przeszedł z " + oldChannel.name + " na " + newChannel.name);
+//   const embed = new EmbedBuilder()
+//     .setTitle("Zmiana kanału")
+//     .setColor("Blue")
+//     .setDescription("Użytkownik " + username + " przeszedł z " + oldChannel.name + " na " + newChannel.name);
 
-  sendEmbed(botChanelID, embed);
-});
+//   sendEmbed(botChanelID, embed);
+// });
 
 client.on(Events.ChannelUpdate, channel => {
   const embed = new EmbedBuilder().setDescription("Zmieniono ustawienia kanału " + channel.name).setColor("Orange");

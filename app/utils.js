@@ -3,7 +3,7 @@ import client from "./client.js";
 const clearChannel = async channelID => {
   const chanel = client.channels.cache.get(channelID);
 
-  const fetched = await chanel.messages.fetch({ limit: 100 });
+  const fetched = await chanel.messages.fetch({ limit: 30 });
 
   chanel.bulkDelete(fetched);
 };
