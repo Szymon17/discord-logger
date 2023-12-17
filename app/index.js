@@ -77,39 +77,6 @@ client.on("guildMemberNicknameUpdate", (member, oldNickname, newNickname) => {
   sendEmbed(botChanelID, embed);
 });
 
-client.on("voiceChannelJoin", (member, channel) => {
-  const username = member.nickname || getUsername(member.user);
-
-  const embed = new EmbedBuilder()
-    .setTitle("Połączono z serwerem")
-    .setColor("DarkGreen")
-    .setDescription("Użytkownik " + username + " dołączył na kanał " + channel.name);
-
-  sendEmbed(botChanelID, embed);
-});
-
-client.on("voiceChannelLeave", (member, channel) => {
-  const username = member.nickname || getUsername(member.user);
-
-  const embed = new EmbedBuilder()
-    .setTitle("Rozłączno z serwerem")
-    .setColor("DarkRed")
-    .setDescription("Użytkownik " + username + " opuścił kanał " + channel.name);
-
-  sendEmbed(botChanelID, embed);
-});
-
-// client.on("voiceChannelSwitch", async (member, oldChannel, newChannel) => {
-//   const username = getUsername(member.user);
-
-//   const embed = new EmbedBuilder()
-//     .setTitle("Zmiana kanału")
-//     .setColor("Blue")
-//     .setDescription("Użytkownik " + username + " przeszedł z " + oldChannel.name + " na " + newChannel.name);
-
-//   sendEmbed(botChanelID, embed);
-// });
-
 client.on(Events.ChannelUpdate, channel => {
   const embed = new EmbedBuilder().setDescription("Zmieniono ustawienia kanału " + channel.name).setColor("Orange");
 
@@ -196,6 +163,85 @@ client.on("voiceStreamingStop", (member, chanel) => {
     .setDescription("Użytkownik " + username + " zakończył transmisję na kanale " + chanel.name);
 
   sendEmbed(botChanelID, embed);
+});
+
+client.on("voiceStateUpdate", (oldState, newState) => {
+  // Mute
+  if (oldState.channelId && newState.channelId) {
+    const username = newState.member.nickname || getUsername(newState.member.user);
+
+    if (oldState.serverDeaf !== newState.serverDeaf) {
+      oldState.member.guild.fetchAuditLogs({ key: "def", old: true, new: false }).then(audit => {
+        const action = audit.entries.first();
+
+        const executor = action.executor.globalName || action.executor.username;
+
+        if (oldState.serverDeaf && !newState.serverDeaf) {
+          const embed = new EmbedBuilder()
+            .setTitle("Przełączono wyciszenie")
+            .setColor("DarkGold")
+            .setDescription("Dla użytkownika " + username + " wyłączono wyciszenie dźwięku " + "przez " + executor);
+
+          sendEmbed(botChanelID, embed);
+        } else {
+          const embed = new EmbedBuilder()
+            .setTitle("Przełączono wyciszenie")
+            .setColor("DarkOrange")
+            .setDescription("Dla użytkownika " + username + " włączono wyciszenie dźwięku " + "przez " + executor);
+
+          sendEmbed(botChanelID, embed);
+        }
+      });
+    }
+
+    if (oldState.serverMute !== newState.serverMute) {
+      oldState.member.guild.fetchAuditLogs({ key: "mute", old: true, new: false }).then(audit => {
+        const action = audit.entries.first();
+
+        const executor = action.executor.globalName || action.executor.username;
+
+        if (oldState.serverMute && !newState.serverMute) {
+          const embed = new EmbedBuilder()
+            .setTitle("Przełączono wyciszenie")
+            .setColor("DarkGold")
+            .setDescription("Dla użytkownika " + username + " wyłączono wyciszenie mikrofonu " + "przez " + executor);
+
+          sendEmbed(botChanelID, embed);
+        } else {
+          const embed = new EmbedBuilder()
+            .setTitle("Przełączono wyciszenie")
+            .setColor("DarkOrange")
+            .setDescription("Dla użytkownika " + username + " włączono wyciszenie mikrofonu " + "przez " + executor);
+
+          sendEmbed(botChanelID, embed);
+        }
+      });
+    }
+  }
+
+  // Connection
+  if (!oldState.channelId && newState.channelId) {
+    const username = newState.member.nickname || getUsername(newState.member.user);
+
+    const embed = new EmbedBuilder()
+      .setTitle("Połączono z serwerem")
+      .setColor("DarkGreen")
+      .setDescription("Użytkownik " + username + " dołączył na kanał " + newState.channel.name);
+
+    sendEmbed(botChanelID, embed);
+  }
+
+  // Disconnection
+  if (oldState.channelId && !newState.channelId) {
+    const username = oldState.member.nickname || getUsername(oldState.member.user);
+
+    const embed = new EmbedBuilder()
+      .setTitle("Rozłączno z serwerem")
+      .setColor("DarkRed")
+      .setDescription("Użytkownik " + username + " opuścił kanał " + oldState.channel.name);
+
+    sendEmbed(botChanelID, embed);
+  }
 });
 
 client.login(process.env.TOKEN);
