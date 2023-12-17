@@ -10,7 +10,7 @@ let comandsCounter = 0;
 const commands = [
   {
     name: "clear",
-    description: "clear 100 logs messages",
+    description: "Czyści ostatnie 30 logów",
   },
 ];
 
